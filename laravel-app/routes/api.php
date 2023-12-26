@@ -20,6 +20,6 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 
-Route::get('/products', [ProductController::class, 'get_products']);
-Route::get('/product/{id}', [ProductController::class, 'get_product_by_id']);
-Route::post('/product/create', [ProductController::class, 'create_product']);
+Route::get('products', [ProductController::class, 'get_products']);
+Route::get('product/{id}', [ProductController::class, 'get_product_by_id']);
+Route::post('product/create', [ProductController::class, 'create_product']);
