@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use Exception;
 use Illuminate\Http\Request;
 use App\Models\Product;
+use Illuminate\Support\Facades\Log;
 
 class ProductController extends Controller
 {
@@ -36,15 +38,82 @@ class ProductController extends Controller
 
     public function create_product(Request $request)
     {
-        $product = Product::create([
-            'name' => $request->name,
-            'qty' => $request->qty,
-            'price' => $request->price
-        ]);
 
-        return response()->json([
-            'message' => 'Product created successfully',
-        ], 201);
+        try
+        {
+            Product::create([
+                'name' => $request->name,
+                'qty' => $request->qty,
+                'price' => $request->price
+            ]);
+    
+            return response()->json([
+                'message' => 'Product created successfully',
+            ], 200);
+        }
+        catch(Exception $e)
+        {
+            Log::error($e);
+            return response()->json([
+                'message' => "Something went wrong",
+            ], 500);
+        }
+
+    }
+
+    public function update_product(Request $request, $id)
+    {
+        try
+        {
+            $product = Product::find($id);
+
+            if($product)
+            {
+                $product->update([
+                    'name' => $request->name,
+                    'qty' => $request->qty,
+                    'price' => $request->price
+                ]);
+
+                return response()->json([
+                    'message' => 'Product updated successfully'
+                ], 200);
+            }
+            else
+            {
+                return response()-> json([
+                    'message' => 'Product not found'
+                ], 404);
+            }
+        }
+        catch(Exception $e)
+        {
+            Log::error($e);
+            return response()->json([
+                'message' => 'Something went wrong'
+            ], 500);
+        }
+        
+    }
+
+    public function delete_product($id)
+    {
+        $product = Product::find($id);
+
+        if($product)
+        {
+            $product->delete();
+            return response()->json([
+                'message' => 'Product deleted successfully'
+            ], 200);
+        }
+        else
+        {
+            return response()->json([
+                'message' => 'Product not found'
+            ], 404);
+        }
+        
     }
     
 }
