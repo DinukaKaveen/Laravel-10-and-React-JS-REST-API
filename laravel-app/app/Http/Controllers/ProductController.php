@@ -48,6 +48,7 @@ class ProductController extends Controller
             ]);
     
             return response()->json([
+                'success' => true,
                 'message' => 'Product created successfully',
             ], 200);
         }
@@ -55,6 +56,7 @@ class ProductController extends Controller
         {
             Log::error($e);
             return response()->json([
+                'success' => false,
                 'message' => "Something went wrong",
             ], 500);
         }
@@ -76,12 +78,14 @@ class ProductController extends Controller
                 ]);
 
                 return response()->json([
+                    'success' => true,
                     'message' => 'Product updated successfully'
                 ], 200);
             }
             else
             {
                 return response()-> json([
+                    'success' => false,
                     'message' => 'Product not found'
                 ], 404);
             }
