@@ -25,12 +25,14 @@ class ProductController extends Controller
         if($product)
         {
             return response()->json([
+                'success' => true,
                 'product' => $product
             ], 200);
         }
         else 
         {
             return response()->json([
+                'success' => false,
                 'message' => 'Product not found'
             ], 404);
         }
